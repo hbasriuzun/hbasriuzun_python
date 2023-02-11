@@ -1,7 +1,8 @@
 # Phyton Nots
 
-### Formatting Strings Cheat Sheet
-## String Reference Cheat Sheet
+## Formatting Strings Cheat Sheet
+
+### String Reference Cheat Sheet
 
 In Python, there are a lot of things you can do with strings. In this cheat sheet, you’ll find the most common string operations and string methods.
 String operations
@@ -43,7 +44,7 @@ String methods
     **delimiter.join(list of strings)** - Returns a new string with all the strings joined by the delimiter 
     
     
-# Lists and Tuples Operations Cheat Sheet
+## Lists and Tuples Operations Cheat Sheet
 
 ##### Lists and tuples are both sequences, so they share a number of sequence operations. But, because lists are mutable, there are also a number of methods specific just to lists. This cheat sheet gives you a run down of the common operations first, and the list-specific operations second.
 ##### Common sequence operations
@@ -89,5 +90,39 @@ String methods
     [expression for variable in sequence] - Creates a new list based on the given sequence. Each element is the result of the given expression.
 
     [expression for variable in sequence if condition] - Creates a new list based on the given sequence. Each element is the result of the given expression; elements only get added if the condition is true.  
+    
+## Dictionary Methods Cheat Sheet
 
+#### Syntax
 
+x = {key1:value1, key2:value2} 
+
+#### Operations
+
+    len(dictionary) - Returns the number of items in the dictionary
+
+    for key in dictionary - Iterates over each key in the dictionary
+
+    for key, value in dictionary.items() - Iterates over each key,value pair in the dictionary
+
+    if key in dictionary - Checks whether the key is in the dictionary
+
+    dictionary[key] - Accesses the item with key key of the dictionary
+
+    dictionary[key] = value - Sets the value associated with key
+
+    del dictionary[key] - Removes the item with key key from the dictionary
+
+#### Methods
+
+    dict.get(key, default) - Returns the element corresponding to key, or default if it's not present
+
+    dict.keys() - Returns a sequence containing the keys in the dictionary
+
+    dict.values() - Returns a sequence containing the values in the dictionary
+
+    dict.update(other_dictionary) - Updates the dictionary with the items coming from the other dictionary. Existing entries will be replaced; new entries will be added.
+
+    dict.clear() - Removes all the items of the dictionary
+
+[More cheat sheet](https://docs.python.org/3/library/stdtypes.html#mapping-types-dict)
