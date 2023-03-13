@@ -4,7 +4,7 @@ import smtplib
 import ssl
 
 email_sender = 'uzun.hbasri@gmail.com'
-email_password = os.environ.get('fxgqjabnihhptnsn')
+email_password = os.environ.get("xcgwelnuvufocjob")
 email_receiver = 'basri.uzun@std.yildiz.edu.tr'
 
 email_subject = 'Test'
@@ -21,6 +21,6 @@ context = ssl.create_default_context()
 with smtplib.SMTP_SSL('smtp.gmail.com', 465,context=context) as smtp:
     smtp.login(email_sender, email_password)
     smtp.sendmail(email_sender, email_receiver, msg.as_string())
-    
+
 
 
