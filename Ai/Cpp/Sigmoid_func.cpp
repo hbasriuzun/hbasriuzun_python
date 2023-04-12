@@ -4,6 +4,10 @@ using namespace std;
 typedef long long ll;
 typedef long double ld;
 
+ll sigmoid(ll x){
+    return 1 / (1 + exp(-x));
+}
+
 int main()
 {
     ll n;
@@ -22,7 +26,7 @@ int main()
 
     for (ll i = 0; i < n; i++)
     {
-        cout << 1 / (1 + exp(-v[i])) << " ";
+        cout << sigmoid(v[i]) << " ";
     }
     return 0;
 }
