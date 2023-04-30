@@ -10,6 +10,13 @@ using namespace std;
 
 typedef long long ll;
 
+double dense(vector<double> x, vector<double> w, double b){
+    double sum = 0;
+    for(int i = 0; i < x.size(); i++){
+        sum += x[i] * w[i];
+    }
+    return sum + b;
+}
 
 double dot(vector<double> x, vector<double> w){
     double sum = 0;
