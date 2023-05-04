@@ -12,7 +12,7 @@
 // =========  YOUR COMPULSORY (BUT SPECIFIC TO THE PROBLEM) FUNCTIONS =======
 // You should update only the block of the function
 
-//___________________ Create unique char key for each state______________________
+//___________________ Create unique char key for each state______________________ only update this part
 void Generate_HashTable_Key(const State *const state, unsigned char* key) 
 {
 	int temp_city = state->city, i=0;

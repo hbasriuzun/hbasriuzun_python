@@ -24,7 +24,7 @@ enum ACTIONS // All possible actions
 
 typedef struct State  
 {
-    enum CITIES city;
+    enum CITIES city;                       // update this part
     float h_n;   // Heuristic function
       
 }State;

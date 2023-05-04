@@ -12,7 +12,7 @@
 typedef struct {
     unsigned int size;
     unsigned int count;
-    unsigned char** State_Key;
+    unsigned char** State_Key;  //maybe update this part
 } Hash_Table;
 
 
