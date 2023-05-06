@@ -3,28 +3,24 @@
 
 // ==================== WRITE YOUR OPTIONAL DATA TYPES IF YOU NEED =============
 
-enum CITIES 
+typedef struct COORDINATE
 {
-	Arad,    Bucharest, Craiova,  Drobeta, Eforie,
-	Fagaras, Giurgiu,   Hirsova,  Iasi,    Lugoj,
-	Mehadia, Neamt,     Oradea,   Pitesti, Rimnicu_Vilcea,
-	Sibiu,   Timisoara, Urziceni, Vaslui,  Zerind
-};
+    int x;
+    int y;
+}COORDINATE;
+
 
 
 // ====== WRITE YOUR COMPULSORY (BUT SPECIFIC TO THE PROBLEM) DATA TYPES =======
 
 enum ACTIONS // All possible actions
 {
-	Go_Arad,    Go_Bucharest, Go_Craiova,  Go_Drobeta, Go_Eforie,
-	Go_Fagaras, Go_Giurgiu,   Go_Hirsova,  Go_Iasi,    Go_Lugoj,
-	Go_Mehadia, Go_Neamt,     Go_Oradea,   Go_Pitesti, Go_Rimnicu_Vilcea,
-	Go_Sibiu,   Go_Timisoara, Go_Urziceni, Go_Vaslui,  Go_Zerind
+	GO_east, GO_west, GO_northeast, GO_northwest, GO_southeast, GO_southwest;
 };
 
 typedef struct State  
 {
-    enum CITIES city;                       // update this part
+    COORDINATE  coordinate;                     // update this part
     float h_n;   // Heuristic function
       
 }State;
@@ -42,7 +38,7 @@ enum METHODS  // This part must be updated if a new algorithm is added.
 typedef struct Transition_Model
 {
     State new_state;
-    float step_cost;
+    float distance_from;
 }Transition_Model;
 
 typedef struct Node

@@ -35,56 +35,25 @@ State* Create_State()
 
 //______________________________________________________________________________
 void Print_State(const State *const state)
-{
-    switch(state->city){
-         case  Arad:      printf("Arad"); break;
-         case  Bucharest: printf("Bucharest"); break;
-         case  Craiova:   printf("Craiova"); break;
-         case  Drobeta:   printf("Drobeta"); break;
-         case  Eforie:    printf("Eforie"); break;
-         case  Fagaras:   printf("Fagaras"); break;
-         case  Giurgiu:   printf("Giurgiu"); break;
-         case  Hirsova:   printf("Hirsova"); break;
-         case  Iasi:      printf("Iasi"); break;
-         case  Lugoj:     printf("Lugoj"); break;
-         case  Mehadia:   printf("Mehadia"); break;
-         case  Neamt:     printf("Neamt"); break;
-         case  Oradea:    printf("Oradea"); break;
-         case  Pitesti:   printf("Pitesti"); break;
-         case  Rimnicu_Vilcea: printf("Rimnicu Vilcea"); break;
-         case  Sibiu:     printf("Sibiu"); break;
-         case  Timisoara: printf("Timisoara"); break;
-         case  Urziceni:  printf("Urziceni"); break;
-         case  Vaslui:    printf("Vaslui"); break;
-         case  Zerind:    printf("Zerind"); break;
-    }  
+{ 
+    printf(" (%d, %d)", state->coordinate.x, state->coordinate.y);
 }
 
 //______________________________________________________________________________
 void Print_Action(const enum ACTIONS action)
 {
    switch(action){
-         case  Go_Arad:      printf("Go_Arad"); break;
-         case  Go_Bucharest: printf("Go_Bucharest"); break;
-         case  Go_Craiova:   printf("Go_Craiova"); break;
-         case  Go_Drobeta:   printf("Go_Drobeta"); break;
-         case  Go_Eforie:    printf("Go_Eforie"); break;
-         case  Go_Fagaras:   printf("Go_Fagaras"); break;
-         case  Go_Giurgiu:   printf("Go_Giurgiu"); break;
-         case  Go_Hirsova:   printf("Go_Hirsova"); break;
-         case  Go_Iasi:      printf("Go_Iasi"); break;
-         case  Go_Lugoj:     printf("Go_Lugoj"); break;
-         case  Go_Mehadia:   printf("Go_Mehadia"); break;
-         case  Go_Neamt:     printf("Go_Neamt"); break;
-         case  Go_Oradea:    printf("Go_Oradea"); break;
-         case  Go_Pitesti:   printf("Go_Pitesti"); break;
-         case  Go_Rimnicu_Vilcea: printf("Go_Rimnicu_Vilcea"); break;
-         case  Go_Sibiu:     printf("Go_Sibiu"); break;
-         case  Go_Timisoara: printf("Go_Timisoara"); break;
-         case  Go_Urziceni:  printf("Go_Urziceni"); break;
-         case  Go_Vaslui:    printf("Go_Vaslui"); break;
-         case  Go_Zerind:    printf("Go_Zerind"); break;
-    }        
+            case  GO_east:      printf("GO_east"); break;
+            case  GO_west:      printf("GO_west"); break;
+            case  GO_northeast: printf("GO_northeast"); break;
+            case  GO_northwest: printf("GO_northwest"); break;
+            case  GO_southeast: printf("GO_southeast"); break;
+            case  GO_southwest: printf("GO_southwest"); break;
+            
+
+    } 
+
+    printf    
 }
 
 //______________________________________________________________________________
@@ -115,12 +84,12 @@ int Result(const State *const parent_state, const enum ACTIONS action, Transitio
 		};
 	     //    A    B    C    D    E    F    G    H    I    L    M    N    O    P    R    S    T    U    V    Z       
 	 
-         if(PATH_COSTS[parent_state->city][action]<=0) 
+         if(PATH_COSTS[parent_state->coordinate][action]<=0) 
               return FALSE;
          else{
-              new_state.city = action;
+              new_state.coordinate = action;
               trans_model->new_state = new_state;
-              trans_model->step_cost = PATH_COSTS[parent_state->city][action]; 
+              trans_model->step_cost = PATH_COSTS[parent_state->coordinate][action]; 
          }     
          return TRUE;                                               
 }

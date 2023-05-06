@@ -15,20 +15,20 @@
 //___________________ Create unique char key for each state______________________ only update this part
 void Generate_HashTable_Key(const State *const state, unsigned char* key) 
 {
-	int temp_city = state->city, i=0;
+	COORDINATE temp_coordinate = state->coordinate, i=0;
 	
-	if(temp_city == 0){
+	if(temp_coordinate.x == 0 && temp_coordinate.y == 0){
 		key[0] = '0';
 		key[1] = '\0';
 	}
 	else{
-		for(i=0; temp_city>0; i++){
-			key[i] = temp_city%10 + '0';
-			temp_city /= 10;
+		for(i=0; temp_coordinate.x > 0 ; i++){
+			key[i] = temp_coordinate.x  % 10 + temp_coordinate.y  + '0';
+			temp_coordinate.x /= 10;
 		}
 		key[i] = '\0';
 	}
-		
+		//slm
 	if(i>MAX_KEY_SIZE){
 		printf("ERROR: MAX_KEY_SIZE is exceeded in Generate_HashTable_Key. \n");
 		exit(-1);
