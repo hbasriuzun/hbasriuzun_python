@@ -15,7 +15,7 @@ typedef struct COORDINATE
 
 enum ACTIONS // All possible actions
 {
-	GO_east, GO_west, GO_northeast, GO_northwest, GO_southeast, GO_southwest;
+	GO_east, GO_west, GO_northeast, GO_northwest, GO_southeast, GO_southwest
 };
 
 typedef struct State  
