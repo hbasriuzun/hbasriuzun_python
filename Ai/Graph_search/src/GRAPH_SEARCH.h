@@ -22,6 +22,7 @@
 // Do not change prototypes. You should update the block of them in GRAPH_SEARCH.c
 State* Create_State(COORDINATE** map, int map_size);
 void Print_State(const State *const state);
+void Print_State_with_size(int Map_Size, COORDINATE** map);
 void Print_Action(const enum ACTIONS action);
 int Result(const State *const parent_state, const enum ACTIONS action, Transition_Model *const trans_model);
 float Compute_Heuristic_Function(const State *const state, const State *const goal); 
@@ -52,6 +53,6 @@ Node* Frontier_search(Queue *const frontier, const State *const state);
 void Remove_Node_From_Frontier(Node *const old_child, Queue **const frontier) ; 
 
 // ==================== WRITE YOUR OPTIONAL DECLARATIONS (IF YOU NEED) =======================
-COORDINATE ** Create_Map(int map_size);
+COORDINATE** Create_Map(int map_size);
 
 #endif

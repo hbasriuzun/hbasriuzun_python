@@ -37,7 +37,7 @@ int main()
     int map_size;
     scanf("%d", &map_size);
 
-    int** map = Create_Map(map_size);
+    COORDINATE** map = Create_Map(map_size);
 
     printf("========== SELECTION OF INITIAL STATE =============== \n");
     root.state     = *(Create_State(map, map_size));
@@ -45,7 +45,7 @@ int main()
     if(PREDETERMINED_GOAL_STATE)  // User will determine the goal state if it is true
     {
 	    printf("======== SELECTION OF GOAL STATE =============== \n"); 
-	    goal_state = Create_State(map);
+	    goal_state = Create_State(map, map_size);
     }
     
     if(method==GreedySearch || method==AStarSearch){

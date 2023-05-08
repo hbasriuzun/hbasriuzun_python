@@ -11,6 +11,8 @@
 #include "data_types.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <math.h>
 
 //______________________________________________________________________________
 State* Create_State(COORDINATE** map, int map_size)
@@ -21,13 +23,25 @@ State* Create_State(COORDINATE** map, int map_size)
 
 	state->Map_Size = map_size;
    	
-     Print_State(state, map);
+    Print_State(state, map);
             
-   
+	int x,y,count = 0;
+		
    	do{ 
-    	printf("Enter the coordinate of the state x and y: ");
-        scanf("%d,%d", &state->coordinate.x, &state->coordinate.y);
-   	}while(state->coordinate.x <0 || state->coordinate.y < 0 ||  state->coordinate.x >= 7 || state->coordinate.y >= 7);
+		printf("Enter the coordinate of the state x and y: ");
+        scanf("%d,%d", &x, &y);
+		if(x >= 0 && y >= 0 && x < map_size * 2 + 1 && y < map_size * 2 + 1 && map[y][x].x != -1 && map[y][x].y != -1){
+			state->coordinate.x = x;
+			state->coordinate.y = y;
+			break;
+		}else if(count == 5){
+			printf("You have entered wrong coordinate 5 times. Program is terminating...\n");
+			exit(0);
+		}else{
+			printf("Invalid coordinate!\n");
+			count++;
+		}
+   	}while(1);
 	       
     return state;    
 }
@@ -44,7 +58,44 @@ void Print_State(const State *const state, COORDINATE** map)
 		
 		for ( j = map_size - i; j < map_size * 2 + 1; j++)
 		{
-			if(map[i][j].x == NULL || map[i][j].y == NULL)
+			if(map[i][j].x == -1 || map[i][j].y == -1)
+				printf("***   ");
+			else
+				printf("%d,%d   ", map[i][j].x, map[i][j].y);
+		}
+        printf("\n\n");
+	}
+
+	for ( i = map_size + 1; i < map_size *2+ 1; i++){
+		for ( j = 0; j < i - map_size; j++){
+			printf("   ");
+		}
+		
+		for ( j = 0; j < map_size * 2 - i + map_size + 1; j++)
+		{
+			if(map[i][j].x == -1 || map[i][j].y == -1)
+				printf("***   ");
+			else
+				printf("%d,%d   ", map[i][j].x, map[i][j].y);
+			
+		}
+        printf("\n\n");
+	}
+
+}
+
+void Print_State_with_size(int Map_Size, COORDINATE** map)
+{ 
+	int i,j;
+	int map_size = Map_Size;
+    for ( i = 0; i < map_size + 1; i++){
+		for ( j = 0; j < map_size - i ; j++){
+			printf("   ");
+		}
+		
+		for ( j = map_size - i; j < map_size * 2 + 1; j++)
+		{
+			if(map[i][j].x == -1 || map[i][j].y == -1)
 				printf("***");
 			else
 				printf("%d,%d   ", map[i][j].x, map[i][j].y);
@@ -59,7 +110,7 @@ void Print_State(const State *const state, COORDINATE** map)
 		
 		for ( j = 0; j < map_size * 2 - i + map_size + 1; j++)
 		{
-			if(map[i][j].x == NULL || map[i][j].y == NULL)
+			if(map[i][j].x == -1 || map[i][j].y == -1)
 				printf("***");
 			else
 				printf("%d,%d   ", map[i][j].x, map[i][j].y);
@@ -144,50 +195,27 @@ int Result(const State *const parent_state, const enum ACTIONS action, Transitio
 
 float Compute_Heuristic_Function(const State *const state, const State *const goal)
 {
-      const float SLD[CITY_NUMBER][CITY_NUMBER] =   // CALCULATED ROUGHLY!!!
-        {   {  0, 366, 300, 220, 590, 235, 430, 535, 420, 168, 225, 355, 110, 290, 185, 130, 105, 435, 470,  67},  // Arad
-            {366,   0, 160, 242, 161, 176,  77, 151, 226, 244, 241, 234, 380, 100, 193, 253, 329,  80, 199, 374},  // Bucharest
-			{300, 160,   0, 102, 325, 210, 142, 325, 368, 145, 110, 388, 355, 133, 138, 190, 220, 220, 385, 330},  // Craiova
-			{220, 242, 102,   0, 390, 245, 240, 380, 400, 100,  70, 460, 310, 190, 155, 205, 150, 302, 410, 265},  // Drobeta
-			{590, 161, 325, 390,   0, 325, 205,  80, 245, 400, 375, 350, 595, 265, 340, 395, 555, 130, 260, 593},  // Eforie
-			{235, 176, 210, 245, 325,   0, 200, 251, 180, 175, 185, 135, 220, 102,  85,  95, 255, 195, 200, 227},  // F 
-			{430,  77, 142, 240, 205, 200,   0, 213, 297, 245, 280, 285, 410, 125, 225, 285, 330, 120, 230, 520},  // G
-			{535, 151, 325, 380,  80, 251, 213,   0, 205, 370, 370, 260, 535, 220, 345, 365, 495,  92, 130, 535},  // H
-			{440, 226, 368, 400, 245, 180, 297, 205,   0, 330, 350,  80, 365, 250, 260, 280, 450, 190,  85, 390},  // I
-			{168, 244, 145, 100, 400, 175, 245, 370, 330,   0,  66, 290, 240, 140,  95, 135, 100, 285, 360, 205},  // L 
-			{225, 241, 110,  70, 375, 185, 280, 370, 350,  66,   0, 305, 300, 140, 120, 175, 130, 280, 370, 260},  // M
-			{355, 234, 388, 460, 350, 135, 285, 260,  80, 290, 305,   0, 273, 220, 260, 250, 330, 235, 155, 310},  // N
-			{110, 380, 355, 310, 595, 220, 410, 535, 365, 240, 300, 273,   0, 305, 200, 140, 213, 415, 435,  66},  // O
-			{290, 100, 133, 190, 265, 102, 125, 220, 250, 140, 140, 220, 305,   0, 115, 150, 230, 140, 185, 297},  // P
-			{185, 193, 138, 155, 340,  85, 225, 345, 260,  95, 120, 260, 200, 115,   0,  75, 150, 230, 290, 193},  // R
-			{130, 253, 190, 205, 395,  95, 285, 365, 280, 135, 175, 250, 140, 150,  75,   0, 137, 300, 330, 135},  // S
-			{105, 329, 220, 150, 555, 255, 330, 495, 450, 100, 130, 330, 213, 230, 150, 137,   0, 380, 455, 155},  // T
-			{435,  80, 220, 302, 130, 195, 120,  92, 190, 285, 280, 235, 415, 140, 230, 300, 380,   0, 132, 425},  // U
-			{470, 199, 385, 410, 260, 200, 230, 130,  85, 360, 370, 155, 435, 185, 290, 330, 455, 132,   0, 452},  // V
-			{ 67, 374, 330, 265, 593, 227, 520, 535, 390, 205, 260, 310,  66, 297, 193, 135, 155, 425, 452,   0}   // Z
-		};
-	     //    A    B    C    D    E    F    G    H    I    L    M    N    O    P    R    S    T    U    V    Z   
-         
-
-
-        return SLD[state->city][goal->city];   
+		if(abs(state->coordinate.x - goal->coordinate.x) > abs(state->coordinate.y - goal->coordinate.y))
+			return abs(state->coordinate.x - goal->coordinate.x);
+		else
+			return abs(state->coordinate.y - goal->coordinate.y);
 }
 
 // ==================== WRITE YOUR OPTIONAL FUNCTIONS ==========================
 
 COORDINATE** Create_Map(int map_size)
 {	
-	int i,j,k;
+	int i,j,k,l;
 
-	COORDINATE **map = (int **)malloc((map_size * 2 + 1) * sizeof(int *));
+	COORDINATE **map = (COORDINATE **)malloc((map_size * 2 + 1) * sizeof(COORDINATE *));
 	for (i = 0; i < map_size * 2 + 1; i++) {
-		map[i] = (int *)malloc((map_size * 2 + 1) * sizeof(int));
+		map[i] = (COORDINATE *)malloc((map_size * 2 + 1) * sizeof(COORDINATE));
 	}
 
     for ( i = 0; i < map_size + 1; i++){
 		for ( j = 0; j < map_size - i ; j++){
-			map[i][j].x = NULL;
-			map[i][j].y = NULL;
+			map[i][j].x = -1;
+			map[i][j].y = -1;
 		}
 		
 		for ( j = map_size - i; j < map_size * 2 + 1; j++)
@@ -199,8 +227,8 @@ COORDINATE** Create_Map(int map_size)
 
 	for ( i = map_size + 1,k = map_size * 2 - 1; i < map_size *2+ 1; i++,k--){
 		for ( j = 6; j > k; j--){
-			map[i][j].x = NULL;
-            map[i][j].y = NULL;
+			map[i][j].x = -1;
+            map[i][j].y = -1;
 		}
 		
 		for ( j = 0; j < map_size * 2 - i + map_size + 1; j++)
@@ -209,14 +237,18 @@ COORDINATE** Create_Map(int map_size)
             map[i][j].y = i;
 		}
 	}
-	printf("Enter of the number of barriers: ");
-	scanf("%d", &k);
 
-	for ( i = 0; i < k; i++){
-		printf("Enter the coordinates of the barrier: ");
-		scanf("%d %d", &j, &k);
-		map[j][k].x = NULL;
-		map[j][k].y = NULL;
+    Print_State_with_size(map_size, map);
+
+	printf("Enter of the number of barriers: ");
+	scanf("%d", &l);
+
+    printf("Enter the coordinates of the barrier or barriers: ");
+    
+	for ( i = 0; i < l; i++){
+		scanf("%d,%d", &j, &k);
+		map[k][j].x = -1;
+		map[k][j].y = -1;
 	}
 
 	return map;
