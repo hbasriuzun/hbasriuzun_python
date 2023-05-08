@@ -20,7 +20,8 @@ enum ACTIONS // All possible actions
 
 typedef struct State  
 {
-    COORDINATE  coordinate;                     // update this part
+    COORDINATE  coordinate; 
+    int Map_Size;                    // update this part
     float h_n;   // Heuristic function
       
 }State;
@@ -38,7 +39,7 @@ enum METHODS  // This part must be updated if a new algorithm is added.
 typedef struct Transition_Model
 {
     State new_state;
-    float distance_from;
+    float step_cost;
 }Transition_Model;
 
 typedef struct Node

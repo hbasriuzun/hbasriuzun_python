@@ -33,13 +33,19 @@ int main()
     root.action    = NO_ACTION;
     root.Number_of_Child = 0;
     	
-    printf("======== SELECTION OF INITIAL STATE =============== \n");
-    root.state     = *(Create_State());
+    printf("============= ENTER OF THE MAP SİZE ================= \n");
+    int map_size;
+    scanf("%d", &map_size);
+
+    int** map = Create_Map(map_size);
+
+    printf("========== SELECTION OF INITIAL STATE =============== \n");
+    root.state     = *(Create_State(map, map_size));
     
     if(PREDETERMINED_GOAL_STATE)  // User will determine the goal state if it is true
     {
 	    printf("======== SELECTION OF GOAL STATE =============== \n"); 
-	    goal_state = Create_State();
+	    goal_state = Create_State(map);
     }
     
     if(method==GreedySearch || method==AStarSearch){

@@ -13,30 +13,61 @@
 #include <stdlib.h>
 
 //______________________________________________________________________________
-State* Create_State()
+State* Create_State(COORDINATE** map, int map_size)
 {
 	State *state = (State*)malloc(sizeof(State));
     if(state==NULL)
     	Warning_Memory_Allocation(); 
-   
-   	for(state->city=Arad; state->city<=Zerind; state->city++){        
-    	printf("%d --> ", state->city);
-        Print_State(state);
-        printf("\n");
-   	}        
+
+	state->Map_Size = map_size;
+   	
+     Print_State(state, map);
+            
    
    	do{ 
-    	printf("Enter the code of the state: ");
-        scanf("%d", &state->city);
-   	}while(state->city<0 && state->city>=CITY_NUMBER);
+    	printf("Enter the coordinate of the state x and y: ");
+        scanf("%d,%d", &state->coordinate.x, &state->coordinate.y);
+   	}while(state->coordinate.x <0 || state->coordinate.y < 0 ||  state->coordinate.x >= 7 || state->coordinate.y >= 7);
 	       
     return state;    
 }
 
 //______________________________________________________________________________
-void Print_State(const State *const state)
+void Print_State(const State *const state, COORDINATE** map)
 { 
-    printf(" (%d, %d)", state->coordinate.x, state->coordinate.y);
+	int i,j;
+	int map_size = state->Map_Size;
+    for ( i = 0; i < map_size + 1; i++){
+		for ( j = 0; j < map_size - i ; j++){
+			printf("   ");
+		}
+		
+		for ( j = map_size - i; j < map_size * 2 + 1; j++)
+		{
+			if(map[i][j].x == NULL || map[i][j].y == NULL)
+				printf("***");
+			else
+				printf("%d,%d   ", map[i][j].x, map[i][j].y);
+		}
+        printf("\n\n");
+	}
+
+	for ( i = map_size + 1; i < map_size *2+ 1; i++){
+		for ( j = 0; j < i - map_size; j++){
+			printf("   ");
+		}
+		
+		for ( j = 0; j < map_size * 2 - i + map_size + 1; j++)
+		{
+			if(map[i][j].x == NULL || map[i][j].y == NULL)
+				printf("***");
+			else
+				printf("%d,%d   ", map[i][j].x, map[i][j].y);
+			
+		}
+        printf("\n\n");
+	}
+
 }
 
 //______________________________________________________________________________
@@ -83,13 +114,30 @@ int Result(const State *const parent_state, const enum ACTIONS action, Transitio
 			{ 75,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  71,  -1,  -1,  -1,  -1,  -1,  -1,   0}   // Z
 		};
 	     //    A    B    C    D    E    F    G    H    I    L    M    N    O    P    R    S    T    U    V    Z       
-	 
+
+
+		 if (action == 0){
+			new_state.coordinate.x == parent_state->coordinate.x + 1; 
+		 }else if (action == 1){
+			new_state.coordinate.x == parent_state->coordinate.x - 1;
+		 }else if (action == 2){
+			new_state.coordinate.y == parent_state->coordinate.y - 1;
+			new_state.coordinate.x == parent_state->coordinate.x + 1;
+		 }else if (action == 3){
+			new_state.coordinate.y == parent_state->coordinate.y - 1;
+		 }else if (action == 4){
+			new_state.coordinate.y == parent_state->coordinate.y + 1;
+		 }else if (action == 5){
+			new_state.coordinate.y == parent_state->coordinate.y + 1;
+			new_state.coordinate.x == parent_state->coordinate.x - 1;
+		 }
+		 
          if(PATH_COSTS[parent_state->coordinate][action]<=0) 
               return FALSE;
          else{
               new_state.coordinate = action;
               trans_model->new_state = new_state;
-              trans_model->step_cost = PATH_COSTS[parent_state->coordinate][action]; 
+              trans_model->step_cost = 1; 
          }     
          return TRUE;                                               
 }
@@ -120,7 +168,56 @@ float Compute_Heuristic_Function(const State *const state, const State *const go
 		};
 	     //    A    B    C    D    E    F    G    H    I    L    M    N    O    P    R    S    T    U    V    Z   
          
+
+
         return SLD[state->city][goal->city];   
 }
 
 // ==================== WRITE YOUR OPTIONAL FUNCTIONS ==========================
+
+COORDINATE** Create_Map(int map_size)
+{	
+	int i,j,k;
+
+	COORDINATE **map = (int **)malloc((map_size * 2 + 1) * sizeof(int *));
+	for (i = 0; i < map_size * 2 + 1; i++) {
+		map[i] = (int *)malloc((map_size * 2 + 1) * sizeof(int));
+	}
+
+    for ( i = 0; i < map_size + 1; i++){
+		for ( j = 0; j < map_size - i ; j++){
+			map[i][j].x = NULL;
+			map[i][j].y = NULL;
+		}
+		
+		for ( j = map_size - i; j < map_size * 2 + 1; j++)
+		{
+			map[i][j].x = j;
+			map[i][j].y = i;
+		}
+	}
+
+	for ( i = map_size + 1,k = map_size * 2 - 1; i < map_size *2+ 1; i++,k--){
+		for ( j = 6; j > k; j--){
+			map[i][j].x = NULL;
+            map[i][j].y = NULL;
+		}
+		
+		for ( j = 0; j < map_size * 2 - i + map_size + 1; j++)
+		{
+			map[i][j].x = j;
+            map[i][j].y = i;
+		}
+	}
+	printf("Enter of the number of barriers: ");
+	scanf("%d", &k);
+
+	for ( i = 0; i < k; i++){
+		printf("Enter the coordinates of the barrier: ");
+		scanf("%d %d", &j, &k);
+		map[j][k].x = NULL;
+		map[j][k].y = NULL;
+	}
+
+	return map;
+}
